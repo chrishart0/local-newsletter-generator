@@ -1,0 +1,32 @@
+[run]
+source = template_python_fastapi_repo
+branch = True
+data_file = .coverage
+omit =
+    **/test_*.py
+    */test_*.py
+    *tests/*
+    */tests/*
+    */__pycache__/*
+    */.pytest_cache/*
+
+[report]
+# Include the following settings to improve the readability of the coverage report
+show_missing = True
+skip_covered = False
+sort = Cover
+precision = 2
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    pass
+    raise ImportError
+
+[html]
+directory = coverage_html_report
+
+[xml]
+output = coverage.xml

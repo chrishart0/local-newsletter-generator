@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+# Prevent multiple concurrent runs of the same workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    permissions:
+        contents: read
+        pull-requests: write
+        
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Cache poetry dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pypoetry
+        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        pip install poetry
+        poetry install
+
+    - name: Create .env file
+      run: cp .env.example .env
+
+    - name: Run black formatter
+      run: |
+        source .venv/bin/activate
+        echo "Running black... if this fails, run `poetry run black .` to fix the issues"
+        poetry run black --check .
+
+    - name: Run flake8 linter
+      run: |
+        source .venv/bin/activate
+        poetry run flake8 .
+
+    - name: Run tests with coverage
+      run: |
+        source .venv/bin/activate
+        poetry run pytest --cov=template_python_fastapi_repo --cov-report=xml --cov-report=term-missing
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
