@@ -1,6 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from main import app, HelloWorld, create_hello_world, add, subtract, multiply, divide
+from settings import settings
 
 client = TestClient(app)
 
@@ -54,3 +55,7 @@ def test_divide_endpoint():
 
     response = client.get("/divide?a=10&b=0")
     assert response.status_code == 400
+
+def test_settings_loaded():
+    assert settings.API_KEY == "your_api_key_here"
+    assert settings.DATABASE_URL == "your_database_url_here"

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from fastapi import FastAPI
+from settings import settings
 
 app = FastAPI()
 
@@ -51,3 +52,7 @@ print(add(1, 2))
 print(subtract(5, 3))
 print(multiply(4, 2))
 print(divide(10, 2))
+
+# Use the loaded settings
+print(f"API_KEY: {settings.API_KEY}")
+print(f"DATABASE_URL: {settings.DATABASE_URL}")
