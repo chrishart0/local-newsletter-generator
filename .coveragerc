@@ -1,5 +1,5 @@
 [run]
-source = template_python_fastapi_repo
+source = local_newsletter_generator
 branch = True
 data_file = .coverage
 omit =

@@ -1,6 +1,0 @@
-requests
-pytest
-pydantic
-fastapi
-uvicorn
-pytest-cov

@@ -1,6 +1,6 @@
 # Template Python FastAPI Repo
-[![CI](https://github.com/chrishart0/template-python-fastapi-repo/actions/workflows/ci.yml/badge.svg)](https://github.com/chrishart0/template-python-fastapi-repo/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/github/chrishart0/template-python-fastapi-repo/graph/badge.svg?token=6QFK2BOQ54)](https://codecov.io/github/chrishart0/template-python-fastapi-repo)
+[![CI](https://github.com/chrishart0/local-newsletter-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/chrishart0/local-newsletter-generator/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/github/chrishart0/local-newsletter-generator/graph/badge.svg?token=6QFK2BOQ54)](https://codecov.io/github/chrishart0/local-newsletter-generator)
 
 ## Instructions
 
@@ -51,7 +51,7 @@ pre-commit install
 
 To run the FastAPI server, use the following command:
 ```sh
-uvicorn template_python_fastapi_repo.main:app --reload
+uvicorn local_newsletter_generator.main:app --reload
 ```
 
 Now navigate to <http://127.0.0.1:8000/docs> and you will see the running FastAPI OpenAI spec
@@ -93,7 +93,7 @@ This project uses environment variables to manage sensitive information and conf
 2. **Run the FastAPI server:**
    Use the following command to run the FastAPI server:
    ```sh
-   uvicorn template_python_fastapi_repo.main:app --reload
+   uvicorn local_newsletter_generator.main:app --reload
    ```
 3. **Verify the settings:**
    Ensure that the environment variables are loaded correctly by checking the output of the FastAPI server or running the tests.
@@ -125,3 +125,8 @@ def create_hello_world(message: str) -> HelloWorld:
 # Example usage
 create_hello_world("Hello, World!")
 ```
+
+# Application Architecture
+
+1) A system for taking in raw data about events happening which extracts events and stores them in a structured way
+2) A system which parses through the events to assemble highlights

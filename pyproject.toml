@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "template-python-fastapi-repo"
+name = "local_newsletter_generator" 
 version = "0.1.0"
 description = "A template repo for modern python FastAPI apps"
 authors = ["chrishart0 <64378248+chrishart0@users.noreply.github.com>"]
@@ -16,6 +16,11 @@ loguru = "^0.7.2"             # https://pypi.org/project/loguru/
 fastapi = "^0.115.4"          # https://pypi.org/project/fastapi/
 uvicorn = "^0.32.0"           # https://pypi.org/project/uvicorn/
 rq = "^2.0.0"
+langchain = "^0.3.4"
+langchain-openai = "^0.2.4"
+langchain-community = "^0.3.3"
+beautifulsoup4 = "^4.12.3"
+cachetools = "^5.5.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.0.1"         # https://pypi.org/project/pre-commit/

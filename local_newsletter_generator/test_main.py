@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from template_python_fastapi_repo.main import (
+from local_newsletter_generator.main import (
     app,
     HelloWorld,
     create_hello_world,
@@ -10,7 +10,7 @@ from template_python_fastapi_repo.main import (
     divide,
     power,
 )
-from template_python_fastapi_repo.settings import settings
+from local_newsletter_generator.settings import settings
 import json
 
 client = TestClient(app)
