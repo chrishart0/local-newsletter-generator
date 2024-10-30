@@ -17,6 +17,8 @@ urls = [
     "https://noogatoday.6amcity.com/newsletter/00000192-bf91-d0ba-a19e-ff99cd0f0022",  # TODO: This must be updated daily
     "https://www.chattanoogan.com/Leisuretime/Around-Town.aspx",
     "https://www.visitchattanooga.com/blog/post/weekend-top-5/",
+    # "https://www.eventbrite.com/d/tn--chattanooga/all-events/", The web scraper isn't getting dates for events from this page
+    "https://www.cha.guide/events",
     # Add more URLs as needed
 ]
 
@@ -27,7 +29,7 @@ def generate_events_data():
 
     for url in urls:
         loaded_webpage = load_webpage(url)
-        events_list = extract_events(loaded_webpage)
+        events_list = extract_events(loaded_webpage, url)
         all_events.extend(events_list.events)  # Add individual events to the list
 
     # Convert events to a serializable format using Pydantic
@@ -55,8 +57,8 @@ def generate_events_markdown():
     with open("events.json", "r") as f:
         events_data = json.load(f)
 
-    # Sort events by date
-    events_data.sort(key=lambda x: x.get("date"))
+    # Sort events by date, handling None values by using a default date far in the past
+    events_data.sort(key=lambda x: x.get("date") or "0000-01-01")
 
     # Produce a markdown file with the events and all the details
     with open("events.md", "w") as f:
@@ -74,5 +76,5 @@ def generate_events_markdown():
 
 
 if __name__ == "__main__":
-    # generate_events_data()
+    generate_events_data()
     generate_events_markdown()

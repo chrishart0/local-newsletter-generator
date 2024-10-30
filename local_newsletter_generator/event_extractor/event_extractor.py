@@ -37,6 +37,9 @@ class Event(BaseModel):
     location: Optional[str] = None
     price: Optional[str] = None
     description: Optional[str] = None
+    major_event: Optional[bool] = Field(
+        description="Whether this event is a major event in the city"
+    )
     organization: Optional[str] = Field(
         description="The organization hosting this specific event"
     )
@@ -80,10 +83,18 @@ llm = ChatOpenAI(
 runnable = prompt | llm.with_structured_output(schema=EventsList)
 
 
-def extract_events(text: str) -> EventsList:
+def extract_events(
+    text: str,
+    original_source_url: str,
+) -> EventsList:
     # Log in green text that the events are being extracted
     logger.info("\033[92mExtracting events from text\033[0m")
     extracted_data = runnable.invoke({"text": text})
     # Log in green text that the events were extracted
     logger.info(f"\033[92mExtracted {len(extracted_data.events)} events\033[0m")
+
+    # Add the original source URL to each event
+    for event in extracted_data.events:
+        event.source_links = [original_source_url]
+
     return extracted_data
