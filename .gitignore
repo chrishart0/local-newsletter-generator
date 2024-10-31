@@ -21,3 +21,6 @@ log/*
 # Cache
 .cache/*
 events.json
+events.md
+newsletter.md
+translated_newsletter.md

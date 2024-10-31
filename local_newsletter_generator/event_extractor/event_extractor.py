@@ -3,9 +3,10 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 from local_newsletter_generator.helpers.logger_helper import get_logger
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
 
 from local_newsletter_generator.settings import Settings
+from local_newsletter_generator.llm.llm_setup import llm
+
 
 settings = Settings()
 
@@ -34,7 +35,10 @@ class Event(BaseModel):
     )
     date: Optional[datetime] = None
     time: Optional[str] = None
-    location: Optional[str] = None
+    location: Optional[str] = Field(
+        description="""The location of the event, consider all your information about the event
+and the city to provide an accurate location of where the event is."""
+    )
     price: Optional[str] = None
     description: Optional[str] = None
     major_event: Optional[bool] = Field(
@@ -47,6 +51,9 @@ class Event(BaseModel):
     rsvp: Optional[str] = None
     source_links: Optional[List[str]] = Field(
         description="Links to the source of the event information"
+    )
+    image_links: Optional[List[str]] = Field(
+        description="Links to images related to the event"
     )
     extra_info: Optional[str] = Field(
         description="Any additional information about the event"
@@ -77,9 +84,6 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-llm = ChatOpenAI(
-    model="gpt-4o-mini", temperature=0, max_tokens=None, timeout=None, max_retries=2
-)
 runnable = prompt | llm.with_structured_output(schema=EventsList)
 
 
@@ -96,5 +100,11 @@ def extract_events(
     # Add the original source URL to each event
     for event in extracted_data.events:
         event.source_links = [original_source_url]
+
+        # Convert date string to datetime object
+        if event.date and isinstance(event.date, str):
+            if len(event.date) == 7:  # If the date string is in 'YYYY-MM' format
+                event.date += "-01"  # Add the day
+            event.date = datetime.strptime(event.date, "%Y-%m-%d")
 
     return extracted_data
